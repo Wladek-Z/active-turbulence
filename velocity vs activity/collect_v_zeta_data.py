@@ -18,8 +18,10 @@ for qtensor in local_path.rglob("Qtensor_*.txt"):
         with open(qtensor, 'r') as file:
             lines = file.readlines()
             for line in lines:
-                values = list(map(float, line.split()))
-                speeds.append(np.linalg.norm(values[8:11]))  # Assuming velocity components are at indices 8, 9, 10
+                line = line.strip()  # Remove whitespace/newlines
+                if line:  # Skip empty lines
+                    values = list(map(float, line.split()))
+                    speeds.append(np.linalg.norm(values[8:11]))  # Assuming velocity components are at indices 8, 9, 10
 
     data.append([zeta, np.mean(speeds)])
         

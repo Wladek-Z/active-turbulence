@@ -10,7 +10,7 @@ OUTPUT_FILE="Qtensor.txt"     # File your simulation produces
 mkdir -p "$OUTPUT_DIR"
 
 # Loop over X parameter sets
-for i in $(seq 1 9); do
+for i in $(seq 1 19); do
 
     # Step 1: Edit parameter file
     activity=$(echo "$i * 0.0002"| bc -l)

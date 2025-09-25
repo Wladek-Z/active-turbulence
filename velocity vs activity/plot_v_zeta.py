@@ -15,10 +15,13 @@ def plot_v_z(data):
     v = data[:, 1]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(zeta, v, marker='o', linestyle='-', color='b')
+    plt.scatter(zeta, v, marker='x',  color='b', s=10)
+    plt.plot(zeta, v, linestyle='--', color='b', alpha=0.5)
     plt.xlabel('Activity parameter (zeta)')
     plt.ylabel(r'Average velocity [$ms^{-1}$]')
     plt.title('Velocity vs activity')
+    #plt.xlim(0, 0.01)
+    #plt.ylim(-0.001, 0.02)
     plt.grid(True)
     plt.show()
 

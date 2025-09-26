@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #SBATCH --job-name=collect-sim-data-64
-#SBATCH --partition=short
-#SBATCH --time=12:00:00
+#SBATCH --partition=long
+#SBATCH --time=24:00:00
 #SBATCH --mem=4G
 #
 #######################################

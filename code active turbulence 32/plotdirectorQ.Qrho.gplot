@@ -1,5 +1,5 @@
-set xrange[0:64]
-set yrange[0:64]
+set xrange[0:32]
+set yrange[0:32]
 unset key
 
 scale=0.7

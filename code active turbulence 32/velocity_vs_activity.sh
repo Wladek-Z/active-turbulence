@@ -17,8 +17,14 @@ for i in $(seq 1 160); do
     parameter_value="$activity, 0"
     echo "$parameter_value" > "$PARAM_FILE"
 
-    # Step 2: Start simulation
-    timeout 120s $SIM_BINARY < "$PARAM_FILE"
+    # Step 2: Start simulation with variable timeout
+    if [[ $i -le 19 ]]; then
+        timeout 1200s $SIM_BINARY < "$PARAM_FILE"
+    elif [[ $i -le 99 ]]; then
+        timeout 180s $SIM_BINARY < "$PARAM_FILE"
+    else
+        timeout 80s $SIM_BINARY < "$PARAM_FILE"
+    fi
     SIM_PID=$!
 
     # Step 3: Rename and move output
@@ -29,5 +35,3 @@ for i in $(seq 1 160); do
         echo "Warning: Output file not found for run $i"
     fi
 done
-
-

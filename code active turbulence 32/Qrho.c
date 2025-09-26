@@ -17,8 +17,8 @@
  */
 
 /* program parameters */
-#define Lx 64
-#define Ly 64 // 100 //96
+#define Lx 32
+#define Ly 32 // 100 //96
 #define Lz 1 // 100 //96				/*32*/ /*240*/ /*100*/
 
 #define Nmax 1000000			/*2000000*/ /* total number of iterations */

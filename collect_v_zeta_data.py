@@ -23,7 +23,7 @@ for qtensor in local_path.rglob("Qtensor_*.txt"):
                     values = list(map(float, line.split()))
                     speeds.append(np.linalg.norm(values[8:11]))  # Assuming velocity components are at indices 8, 9, 10
 
-    data.append([zeta, np.mean(speeds)])
+        data.append([zeta, np.mean(speeds)])
         
 with open(local_path / "v_vs_zeta_data.txt", 'w') as outfile:
     outfile.write("# zeta    average_speed\n")

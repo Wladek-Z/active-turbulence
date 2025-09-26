@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from pathlib import Path
-local_path = Path(__file__).parent
+local_path = Path(__file__).parent / "velocity vs activity 64"
 
 def load_data(file_path):
     """Load data from a text file."""
@@ -20,8 +20,8 @@ def plot_v_z(data):
     plt.xlabel('Activity parameter (zeta)')
     plt.ylabel(r'Average velocity [$ms^{-1}$]')
     plt.title('Velocity vs activity')
-    #plt.xlim(0, 0.01)
-    #plt.ylim(-0.001, 0.02)
+    #plt.xlim(0, 0.008) # for 64x64 system
+    #plt.ylim(-0.001, 0.015) # for 64x64 system
     plt.grid(True)
     plt.show()
 

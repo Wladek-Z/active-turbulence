@@ -1,5 +1,5 @@
 from pathlib import Path
-local_path = Path(__file__).parent / "velocity vs activity 64"
+local_path = Path(__file__).parent / "velocity vs activity 32"
 
 import numpy as np
 import re

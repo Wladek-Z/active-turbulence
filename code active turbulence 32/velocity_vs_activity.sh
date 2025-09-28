@@ -19,9 +19,9 @@ for i in $(seq 1 250); do
 
     # Step 2: Start simulation with variable timeout
     if [[ $i -le 49 ]]; then
-        timeout 240s $SIM_BINARY < "$PARAM_FILE"
+        timeout 300s $SIM_BINARY < "$PARAM_FILE"
     else
-        timeout 40s $SIM_BINARY < "$PARAM_FILE"
+        timeout 60s $SIM_BINARY < "$PARAM_FILE"
     fi
     SIM_PID=$!
 

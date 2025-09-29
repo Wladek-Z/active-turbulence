@@ -20,13 +20,13 @@ def plot_v_z(data):
     ymax = np.max(v)
 
     plt.figure(figsize=(8, 6))
-    #plt.scatter(zeta, v, marker='+',  color='b', s=10)
-    plt.plot(zeta, v, linestyle='-', color='b')
+    plt.scatter(zeta, v, marker='+',  color='b', s=10)
+    #plt.plot(zeta, v, linestyle='-', color='b')
     plt.xlabel('Activity parameter (zeta)')
     plt.ylabel(r'Average velocity [$ms^{-1}$]')
     plt.title(r'Velocity vs activity ($32 \times 32$)')
-    plt.xlim(xmin, 0.007) 
-    plt.ylim(ymin, 0.006)
+    plt.xlim(xmin, xmax) 
+    plt.ylim(ymin, ymax)
     plt.grid(True)
     plt.show()
 

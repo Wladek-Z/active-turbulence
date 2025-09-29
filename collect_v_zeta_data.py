@@ -30,4 +30,3 @@ with open(local_path / "v_vs_zeta_data.txt", 'w') as outfile:
     for zeta, avg_speed in sorted(data):
         outfile.write(f"{zeta} {avg_speed}\n")
 
-print("hello")

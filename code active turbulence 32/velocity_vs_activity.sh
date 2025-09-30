@@ -23,14 +23,13 @@ for i in $(seq 1 170); do
     echo "$parameter_value" > "$PARAM_FILE"
 
     # Step 2: Start simulation with variable timeout
-    if [[ $activity -le 0.01 ]]; then
-        timeout 300s $SIM_BINARY < "$PARAM_FILE"
-    elif [[ $activity -le 0.017 ]]; then
+    if (( $(echo "$activity <= 0.01" | bc -l) )); then
+    	timeout 300s $SIM_BINARY < "$PARAM_FILE"
+    elif (( $(echo "$activity <= 0.017" | bc -l) )); then
         timeout 120s $SIM_BINARY < "$PARAM_FILE"
     else
         timeout 60s $SIM_BINARY < "$PARAM_FILE"
     fi
-    SIM_PID=$!
 
     # Step 3: Rename and move output
     NEW_NAME="Qtensor_${activity}.txt"

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#SBATCH --job-name=collect-sim-data-64
+#SBATCH --job-name=collect-vt-data-32
 #SBATCH --partition=long
-#SBATCH --time=24:00:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=4G
 #
 #######################################
 
 
-bash velocity_vs_activity.sh
+bash velocity_vs_time.sh

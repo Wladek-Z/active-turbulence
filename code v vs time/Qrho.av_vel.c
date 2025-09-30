@@ -17,8 +17,8 @@
  */
 
 /* program parameters */
-#define Lx 64
-#define Ly 64 // 100 //96
+#define Lx 32
+#define Ly 32 // 100 //96
 #define Lz 1 // 100 //96				/*32*/ /*240*/ /*100*/
 
 #define Nmax 1000000			/*2000000*/ /* total number of iterations */
@@ -54,6 +54,7 @@ void update0(double [Lx][Ly][Lz][15], double [Lx][Ly][Lz][15]);
 void update (double [Lx][Ly][Lz][15], double [Lx][Ly][Lz][15], double [Lx][Ly][Lz][15]);
 
 void computedensityfluctuations(int boxsize);
+double computeaveragevelocity(void);
 
 void plot(void);
 void plotQ(void);
@@ -261,6 +262,8 @@ char filename2[20];
 FILE *output3;
 char filename3[20];
 
+FILE *fp;
+
 int main(int argc, char** argv)
 {
 	int i, j, k, l;
@@ -270,16 +273,19 @@ int main(int argc, char** argv)
 	double Qxxl,Qxyl,Qxzl,Qyyl,Qyzl,Qzzl;
 	double TrQ2,qorder;
 
+	double av_vel;
 	double deltaQ;
 
 
 	w1 = 0.0;
 	friction = 0.0; //0.01;
 
+	av_vel=0.0;
+	
 	double tol = 1.0E-12;
 	double tolerance, Vybefore, Vzbefore;
 
-    scanf("%lf %lf",&zeta,&bodyforce);
+	scanf("%lf %lf",&zeta,&bodyforce);
 	initialize();
 	initializephi();
 	initializeQ();
@@ -303,6 +309,8 @@ int main(int argc, char** argv)
 	  phivar[j]=0.0;
 	}
 
+	fp=fopen("velocity.dat","w");
+	
 	//main update loop starts on next row
 	for (n = 1; n <= Nmax; n++) {
 
@@ -445,12 +453,16 @@ int main(int argc, char** argv)
 		if (n % stepskip == 0) {
 		  plotQ();
 		  if(n>=10000) plotdensityfluctuations();
-		  if(n>=10000) computeaveragevelocity();
-            
+		  if(n>=1000){
+		    av_vel=computeaveragevelocity();
+		    fprintf(fp,"%d %lf\n",n,av_vel);
+		    fflush(fp);
+		  }
+		  
 			tolerance = (Vy - Vybefore)/Vybefore;
 			Vybefore = Vy;
 
-           		printf("%d \t %E \t %E \t %E \n", n, phi_average, Vy, tolerance);
+           		printf("%d \t %E \t %E \t %E \t %E \n", n, av_vel, phi_average, Vy, tolerance);
 
 			/*			if (tolerance > -tol && tolerance < tol) {
 				break;
@@ -458,6 +470,7 @@ int main(int argc, char** argv)
 		}
 		/**************************************************************/
 	}
+	fclose(fp);
 
 	printf("final Vy = %E \n \n", Vy);
 }
@@ -2254,10 +2267,28 @@ void computedensityfluctuations(int boxsize)
     
 }
 
-void computeaveragevelocity(void)
+double computeaveragevelocity(void)
 {
-    	
-
+    int i,j,k;
+    double av,av2,var,std;
+    
+    var=0.0;
+    av=0.0;
+    av2=0.0;
+    
+    for(i=0 ; i<Lx; i++) {
+        for(j=0 ; j<Ly; j++) {
+            for(k=0 ; k<Lz; k++) {
+                
+	      av += sqrt(ux[i][j][k]*ux[i][j][k]+uy[i][j][k]*uy[i][j][k]+uz[i][j][k]*uz[i][j][k]);
+	      
+	    }
+	}
+    }
+    
+    av = av/((float)(Lx*Ly*Lz));	
+    return av;
+    
 }
 
 void plotdensityfluctuations(void)

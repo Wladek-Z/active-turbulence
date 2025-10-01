@@ -10,20 +10,26 @@ OUTPUT_FILE="Qtensor.txt"     # File your simulation produces
 mkdir -p "$OUTPUT_DIR"
 
 # Loop over X parameter sets
-for i in $(seq 1 250); do
+for i in $(seq 1 170); do
 
-    # Step 1: Edit parameter file
-    activity=$(echo "$i * 0.0002"| bc -l)
+    # Step 1: Edit parameter file    
+    if [[ $i -le 170 ]]; then
+    	activity=$(echo "$i * 0.0001"| bc -l)
+    else
+    	activity=$(echo "$i * 0.0002 - 0.017" | bc -l)
+    fi
+    	
     parameter_value="$activity, 0"
     echo "$parameter_value" > "$PARAM_FILE"
 
     # Step 2: Start simulation with variable timeout
-    if [[ $i -le 49 ]]; then
-        timeout 300s $SIM_BINARY < "$PARAM_FILE"
+    if (( $(echo "$activity <= 0.01" | bc -l) )); then
+    	timeout 300s $SIM_BINARY < "$PARAM_FILE"
+    elif (( $(echo "$activity <= 0.017" | bc -l) )); then
+        timeout 120s $SIM_BINARY < "$PARAM_FILE"
     else
         timeout 60s $SIM_BINARY < "$PARAM_FILE"
     fi
-    SIM_PID=$!
 
     # Step 3: Rename and move output
     NEW_NAME="Qtensor_${activity}.txt"

@@ -1,0 +1,13 @@
+in gnuplot, to see the density superimposed with the director field pattern (should have voids at defects), you can use
+
+p'Qtensor.txt' u 1:2:18 w image,'Qtensor.txt' u 1:2:12:13 w vector nohead,'Qtensor.txt' u 1:2:(-$12):(-$13) w vector nohead lc 1
+
+or
+
+scale2=0.7
+p'Qtensor.txt' u 1:2:18 w image,'Qtensor.txt' u 1:2:($12*scale2):($13*scale2) w vector nohead,'Qtensor.txt' u 1:2:(-$12*scale2):(-$13*scale2) w vector nohead lc 1
+
+to see plot of orientational order parameter (magnitude of orientational order)
+p'Qtensor.txt' u 1:2:15 w image
+
+The file Qtensor.txt contains information about Q tensor, director field, density field and velocity field (to get familiar with the format you can look at the output function streamfile)

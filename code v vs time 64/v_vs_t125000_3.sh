@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Paths
-PARAM_FILE="in_turbulence125000_3"
-OUTPUT_DIR="../velocity vs time 64"
-SIM_BINARY="./Qrho125000"      # Simulation executable
-OUTPUT_FILE="velocity125000_3.dat"     # Simulation output file
+PARAM_FILE="125000 3/in_turbulence"
+OUTPUT_DIR="../../velocity vs time 64"
+SIM_BINARY="125000 3/Qrho125000"      # Simulation executable
+OUTPUT_FILE="125000 3/velocity.dat"     # Simulation output file
 
 # Create results directory if it doesn’t exist
 mkdir -p "$OUTPUT_DIR"

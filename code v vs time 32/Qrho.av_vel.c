@@ -21,7 +21,7 @@
 #define Ly 32 // 100 //96
 #define Lz 1 // 100 //96				/*32*/ /*240*/ /*100*/
 
-#define Nmax 1000000			/*2000000*/ /* total number of iterations */
+#define Nmax 125000			/*2000000*/ /* total number of iterations */
 #define stepskip 500			/*2500*/ /* output graphics every stepskip steps */
 #define tau1 2.5			/* 2.5 proportional to viscosity */
 #define dt 1.0

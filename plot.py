@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-system = "32"
+system = "64"
 
 from pathlib import Path
 local_path = Path(__file__).parent / f"velocity vs time {system}"
@@ -32,7 +32,34 @@ def plot_vz(data):
     plt.grid(True)
     plt.show()
 
+def plot_std(data):
+    """Plot standard deviation of velocity vs activity parameter"""
+    z = data[:, 0]
+    std = data[:, 1]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(z, std, linestyle='-', color='r')
+    plt.xlabel(r'activity parameter ($\zeta$)')
+    plt.ylabel(r'standard deviation of velocity [$su$]')
+    plt.title(rf'Standard Deviation of Velocity vs Activity (${system} \times {system}$ system)')
+    plt.grid(True)
+    plt.show()
+
+def plot_vt(data):
+    """Plot average velocity against timestep"""
+    t = data[:, 0]
+    v = data[:, 1]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(t, v, linestyle='-', color='g')
+    plt.xlabel('timestep')
+    plt.ylabel(r'average velocity [$su$]')
+    plt.title(rf'Average Velocity Evolution (${system} \times {system}$ system)')
+    plt.grid(True)
+    plt.show()
+
+
 if __name__ == "__main__":
-    file_path = local_path / 'vz_data.txt'
+    file_path = local_path / 'velocity_.0308.dat'
     data = load_data(file_path)
-    plot_vz(data)
+    plot_vt(data)

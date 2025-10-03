@@ -1,40 +1,34 @@
 from pathlib import Path
-local_path = Path(__file__).parent / "velocity vs activity 64"
+local_path = Path(__file__).parent / "velocity vs time 64"
 
 import numpy as np
 import re
 
-data = [] # will contain lists of [zeta, average speed]
+def collect_zeta_data():
+    data = []  # will contain lists of [zeta, average speed]
 
-for qtensor in local_path.rglob("Qtensor_*.txt"):
-    # Extract the float number from the filename
-    filename = qtensor.name  # e.g., "Qtensor_.002.txt"
-    match = re.search(r"Qtensor_([-+]?\d*\.?\d+)\.txt", filename)
+    for velocity in local_path.rglob("velocity_*.dat"):
+        # Extract the float number from the filename
+        filename = velocity.name  # e.g., "velocity_.002.dat"
+        match = re.search(r"velocity_([-+]?\d*\.?\d+)\.dat", filename)
 
-    if match:
-        zeta = float(match.group(1))
-        speeds = []
+        if match:
+            zeta = float(match.group(1))
 
-        with open(qtensor, 'r') as file:
-            lines = file.readlines()
-            for line_num, line in enumerate(lines, 1):
-                line = line.strip()  # Remove whitespace/newlines
-                if line:  # Skip empty lines
-                    try:
-                        values = list(map(float, line.split()))
-                        speeds.append(np.linalg.norm(values[8:11]))  # Assuming velocity components are at indices 8, 9, 10
-                    except ValueError as e:
-                        print(f"Error in file {qtensor.name}, line {line_num}: {e}")
-                        print(f"Problematic line: {line}")
-                        continue  # Skip this line and continue with the next
-
-        if speeds:  # Only add data if we have valid speeds
-            data.append([zeta, np.mean(speeds)])
+            with open(velocity, 'r') as file:
+                lines = file.readlines()
+                parts = lines[-1].strip().split()
+                speed = float(parts[1])
+            data.append([zeta, speed])
         else:
-            print(f"Warning: No valid data found in file {qtensor.name}")
-        
-with open(local_path / "v_vs_zeta_data.txt", 'w') as outfile:
-    outfile.write("# zeta    average_speed\n")
-    for zeta, avg_speed in sorted(data):
-        outfile.write(f"{zeta} {avg_speed}\n")
+            print(f"Warning: No valid data found in file {velocity.name}")
+
+    # Save the collected data to a text file
+    with open(local_path / "vz_data.txt", 'w') as outfile:
+        outfile.write("# zeta    average_speed\n")
+        for zeta, avg_speed in sorted(data):
+            outfile.write(f"{zeta} {avg_speed}\n")
+
+if __name__ == "__main__":
+    collect_zeta_data()
 

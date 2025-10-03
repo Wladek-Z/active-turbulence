@@ -11,7 +11,7 @@ OUTPUT_FILE="velocity.dat"     # Simulation output file
 mkdir -p "$OUTPUT_DIR"
 
 # Loop over X parameter sets
-for i in $(seq 336 485); do
+for i in $(seq 336 435); do
 
     # Step 1: Edit parameter file    
     if [[ $i -le 170 ]]; then

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-system = "64"
+system = "32"
 
 from pathlib import Path
 local_path = Path(__file__).parent / f"velocity vs time {system}"
@@ -22,13 +22,13 @@ def plot_vz(data):
     ymax = np.max(v)
 
     plt.figure(figsize=(8, 6))
-    #plt.scatter(z, v, marker='+',  color='b', s=10)
-    plt.plot(z, v, linestyle='-', color='b')
+    plt.scatter(z, v, marker='+',  color='b', s=10)
+    #plt.plot(z, v, linestyle='-', color='b')
     plt.xlabel(r'activity parameter ($\zeta$)')
     plt.ylabel(r'average velocity [$su$]')
     plt.title(rf'Velocity vs Activity (${system} \times {system}$ system)')
-    plt.xlim(0.002, 0.0045) 
-    plt.ylim(0, 0.0025)
+    #plt.xlim(0.002, 0.0045) 
+    #plt.ylim(0, 0.0025)
     plt.grid(True)
     plt.show()
 
@@ -60,6 +60,6 @@ def plot_vt(data):
 
 
 if __name__ == "__main__":
-    file_path = local_path / 'velocity_.0308.dat'
+    file_path = local_path / 'velocity_.0800.dat'
     data = load_data(file_path)
     plot_vt(data)

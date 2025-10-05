@@ -1,5 +1,5 @@
 from pathlib import Path
-local_path = Path(__file__).parent / "velocity vs time 64"
+#local_path = Path(__file__).parent / "velocity vs time 32"
 
 import numpy as np
 import re
@@ -57,5 +57,5 @@ def collect_std_data():
 
 if __name__ == "__main__":
     local_path = Path(__file__).parent / "velocity vs time 32"
-    #collect_zeta_data()
+    collect_zeta_data()
     collect_std_data()

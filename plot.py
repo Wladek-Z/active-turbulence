@@ -60,6 +60,6 @@ def plot_vt(data):
 
 
 if __name__ == "__main__":
-    file_path = local_path / 'velocity_.0800.dat'
+    file_path = local_path / 'velocity_.0300.dat'
     data = load_data(file_path)
     plot_vt(data)

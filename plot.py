@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-system = "32"
+system = "64"
 
 from pathlib import Path
 local_path = Path(__file__).parent / f"velocity vs time {system}"
@@ -72,5 +72,5 @@ def plot_mean_v(data):
 if __name__ == "__main__":
     file_path = local_path / 'mean_v_data.txt'
     data = np.loadtxt(file_path)
-    #data = data[::5]
+    data = data[::5]
     plot_mean_v(data)

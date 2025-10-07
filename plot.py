@@ -1,15 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-system = "32"
+system = "64"
 
 from pathlib import Path
 local_path = Path(__file__).parent / f"velocity vs time {system}"
-
-def load_data(file_path):
-    """Load data from a text file."""
-    data = np.loadtxt(file_path)
-    return data
 
 def plot_vz(data):
     """Plot average velocity vs activity parameter"""
@@ -32,13 +27,15 @@ def plot_vz(data):
     plt.grid(True)
     plt.show()
 
-def plot_std(data):
-    """Plot standard deviation of velocity vs activity parameter"""
+def plot_SD(data):
+    """Plot standard deviation of velocity vs activity parameter with shaded error region"""
     z = data[:, 0]
-    std = data[:, 1]
+    SD = data[:, 1]
+    SD_err = data[:, 2]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(z, std, linestyle='-', color='r')
+    plt.plot(z, SD, linestyle='-', color='r')
+    plt.fill_between(z, SD - SD_err, SD + SD_err, color='r', alpha=0.2)
     plt.xlabel(r'activity parameter ($\zeta$)')
     plt.ylabel(r'standard deviation of velocity [$su$]')
     plt.title(rf'Standard Deviation of Velocity vs Activity (${system} \times {system}$ system)')
@@ -60,6 +57,7 @@ def plot_vt(data):
 
 
 if __name__ == "__main__":
-    file_path = local_path / 'velocity_.0300.dat'
-    data = load_data(file_path)
-    plot_vt(data)
+    file_path = local_path / 'SD_data.txt'
+    data = np.loadtxt(file_path)
+    data = data[::5]
+    plot_SD(data)

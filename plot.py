@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-system = "64"
+system = "32"
 
 from pathlib import Path
 local_path = Path(__file__).parent / f"velocity vs time {system}"
@@ -55,9 +55,22 @@ def plot_vt(data):
     plt.grid(True)
     plt.show()
 
+def plot_mean_v(data):
+    """Plot mean velocity in steady-state against activity parameter"""
+    z = data[:, 0]
+    v = data[:, 1]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(z, v, linestyle='-', color='b')
+    plt.xlabel(r'activity parameter ($\zeta$)')
+    plt.ylabel(r'mean velocity in steady-state [$su$]')
+    plt.title(rf'Mean Velocity vs Activity (${system} \times {system}$ system)')
+    plt.grid(True)
+    plt.show()
+
 
 if __name__ == "__main__":
-    file_path = local_path / 'SD_data.txt'
+    file_path = local_path / 'mean_v_data.txt'
     data = np.loadtxt(file_path)
-    data = data[::5]
-    plot_SD(data)
+    #data = data[::5]
+    plot_mean_v(data)

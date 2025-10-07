@@ -101,8 +101,36 @@ def find_Kmax(data, threshold=0.01, max_resamples=100000):
 
     print(f"Did not converge after {max_resamples} resamples")
 
+def mean_v_data():
+    """Read last 200 lines of data, calculate the mean velocity for each file. Save to mean_v_data.txt"""
+    data = []  # will contain lists of [zeta, mean_speed]
+
+    for velocity in local_path.rglob("velocity_*.dat"):
+        # Extract the float number from the filename
+        filename = velocity.name  # e.g., "velocity_.002.dat"
+        match = re.search(r"velocity_([-+]?\d*\.?\d+)\.dat", filename)
+
+        if match:
+            zeta = float(match.group(1))
+
+            with open(velocity, 'r') as file:
+                lines = file.readlines()[-200:]  # Read last 200 lines
+                speeds = [float(line.strip().split()[1]) for line in lines]
+                mean_speed = np.mean(speeds)
+
+            data.append([zeta, mean_speed])
+            
+        else:
+            print(f"Warning: No valid data found in file {velocity.name}")
+
+    # Save the collected data to a text file
+    with open(local_path / "mean_v_data.txt", 'w') as outfile:
+        outfile.write("# zeta    mean_speed\n")
+        for zeta, mean_speed in sorted(data):
+            outfile.write(f"{zeta} {mean_speed}\n")
+
 if __name__ == "__main__":
-    local_path = Path(__file__).parent / "velocity vs time 64"
-    collect_SD_data()
+    local_path = Path(__file__).parent / "velocity vs time 32"
+    mean_v_data()
     
     

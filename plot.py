@@ -1,10 +1,8 @@
 import numpy as np
+from scipy.fft import rfft, rfftfreq
 import matplotlib.pyplot as plt
-
-system = "64"
-
 from pathlib import Path
-local_path = Path(__file__).parent / f"velocity vs time {system}"
+
 
 def plot_vz(data):
     """Plot average velocity vs activity parameter"""
@@ -68,9 +66,45 @@ def plot_mean_v(data):
     plt.grid(True)
     plt.show()
 
+def plot_fft(data):
+    """Plot FFT of velocity data"""
+    d = data[-200:]
+    t = d[:, 0]
+    v = d[:, 1]
+
+    # Compute the original FFT
+    dft = rfft(v)
+    
+    # Manually set first component to zero
+    dft[0] = 0
+    dft = np.abs(dft)
+
+    freq = rfftfreq(len(t), d=(t[1] - t[0]))
+
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+
+    fig.suptitle(rf'Discrete Fourier Transform of Velocity (${system} \times {system}$ system)', fontsize=16)
+
+    ax[0].plot(freq, dft, linestyle='-', color='orange')
+    ax[0].set_xlabel(r'Frequency [cycles timestep$^{-1}$]')
+    ax[0].set_ylabel('|DFT|')
+    #ax[0].set_title(rf'Discrete Fourier Transform of Velocity (${system} \times {system}$ system)')
+    ax[0].grid(True)
+
+    ax[1].semilogy(freq, dft, linestyle='-', color='orange')
+    ax[1].set_xlabel(r'Frequency [cycles timestep$^{-1}$]')
+    ax[1].set_ylabel('|DFT| (log scale)')
+    #ax[1].set_title(rf'Discrete Fourier Transform of Velocity (${system} \times {system}$ system)')
+    ax[1].grid(True)
+    
+    plt.tight_layout()  # Add extra padding at bottom
+    plt.show()
 
 if __name__ == "__main__":
-    file_path = local_path / 'mean_v_data.txt'
+    system = "64"
+    local_path = Path(__file__).parent / f"velocity vs time {system}"
+    file_path = local_path / 'velocity_.0400.dat'
+
     data = np.loadtxt(file_path)
-    data = data[::5]
-    plot_mean_v(data)
+    
+    plot_fft(data)

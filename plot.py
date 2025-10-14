@@ -83,7 +83,7 @@ def plot_fft(data):
 
     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
 
-    fig.suptitle(rf'Discrete Fourier Transform of Velocity (${system} \times {system}$ system)', fontsize=16)
+    #fig.suptitle(rf'Discrete Fourier Transform of Velocity (${system} \times {system}$ system)', fontsize=16)
 
     ax[0].plot(freq, dft, linestyle='-', color='orange')
     ax[0].set_xlabel(r'Frequency [cycles timestep$^{-1}$]')
@@ -101,9 +101,9 @@ def plot_fft(data):
     plt.show()
 
 if __name__ == "__main__":
-    system = "64"
+    system = "32"
     local_path = Path(__file__).parent / f"velocity vs time {system}"
-    file_path = local_path / 'velocity_.0400.dat'
+    file_path = local_path / 'velocity_.0100.dat'
 
     data = np.loadtxt(file_path)
     

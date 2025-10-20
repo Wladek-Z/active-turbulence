@@ -10,15 +10,8 @@ def get_data(directory, spacing=1):
     zeta = []
     velocity_list = []
     timestep_list = []
-    i = -1
 
     for vel_file in directory.rglob("velocity_*.dat"):
-        # Check if the current index is a multiple of the spacing
-        # Note: this works equivalently to data[::spacing]
-        i += 1
-        if i % spacing != 0:
-            continue
-
         # Extract the float number from the filename
         filename = vel_file.name  # e.g., "velocity_.002.dat"
         #print(f"Processing file: {filename}")
@@ -38,8 +31,13 @@ def get_data(directory, spacing=1):
 
         else:
             print(f"Warning: No valid data found in file {vel_file.name}")
+    
+    order = np.argsort(zeta)
+    zeta = np.array(zeta)[order]
+    velocity_list = [velocity_list[i] for i in order]
+    timestep_list = [timestep_list[i] for i in order]
 
-    return np.array(zeta), np.array(timestep_list), np.array(velocity_list)
+    return zeta[::spacing], timestep_list[::spacing], velocity_list[::spacing]
 
 def frequency_analysis(z, t_list, v_list):
     """Perform Fourier analysis to find the standard deviation of the frequency spectrum for each zeta value."""
@@ -54,28 +52,33 @@ def frequency_analysis(z, t_list, v_list):
 
         # Perform Fourier Transform
         FT = fft.rfft(v)
+        FT[0] = 0  # Remove zero-frequency component
+        FT = np.abs(FT)
         nu = fft.rfftfreq(N, dt)
 
         # Find average frequency <nu>, average square frequency <nu^2>
-        avg_nu = np.sum(nu * np.abs(FT)**2) / np.sum(np.abs(FT)**2)
-        avg_nu2 = np.sum(nu**2 * np.abs(FT)**2) / np.sum(np.abs(FT)**2)
+        sum_FT_squared = np.sum(FT**2)
+        
+        if sum_FT_squared == 0:
+            print(f"Warning: Sum of FT^2 is {sum_FT_squared} for zeta={zeta}. Signal likely too constant.")
+            avg_nu = avg_nu2 = 0
+            start = i+1
+        else:
+            avg_nu = np.sum(nu * FT**2) / sum_FT_squared
+            avg_nu2 = np.sum(nu**2 * FT**2) / sum_FT_squared
 
         # Find standard deviation of frequency spectrum
         SD_nu = np.sqrt(avg_nu2 - avg_nu**2)
 
         SD_freq.append([zeta, SD_nu])
-
-    return SD_freq # [0]: zeta, [1]: SD of frequency
+    
+    return SD_freq[start:] # [0]: zeta, [1]: SD of frequency
 
 def plot_SD_freq(SD_freq):
     """Plot standard deviation of frequency vs activity parameter"""
     SD_freq = np.array(SD_freq)
     z = SD_freq[:, 0]
     SD_nu = SD_freq[:, 1]
-    
-    order = np.argsort(z)
-    z = z[order]
-    SD_nu = SD_nu[order]
 
     plt.figure(figsize=(8, 6))
     plt.plot(z, SD_nu, color='m')
@@ -86,7 +89,7 @@ def plot_SD_freq(SD_freq):
     plt.show()
 
 if __name__ == "__main__":
-    system = "64"
+    system = "32"
     local_path = Path(__file__).parent / f"velocity vs time {system}"
     
     if system == "32":

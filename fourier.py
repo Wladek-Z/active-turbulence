@@ -67,6 +67,24 @@ def frequency_analysis(z, t_list, v_list):
 
     return SD_freq # [0]: zeta, [1]: SD of frequency
 
+def plot_SD_freq(SD_freq):
+    """Plot standard deviation of frequency vs activity parameter"""
+    SD_freq = np.array(SD_freq)
+    z = SD_freq[:, 0]
+    SD_nu = SD_freq[:, 1]
+    
+    order = np.argsort(z)
+    z = z[order]
+    SD_nu = SD_nu[order]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(z, SD_nu, color='m')
+    plt.xlabel(r'activity parameter ($\zeta$)')
+    plt.ylabel(r'standard deviation of frequency [cycles timestep$^{-1}$]')
+    plt.title(rf'Standard Deviation of Frequency vs Activity (${system} \times {system}$ system)')
+    plt.grid(True)
+    plt.show()
+
 if __name__ == "__main__":
     system = "64"
     local_path = Path(__file__).parent / f"velocity vs time {system}"
@@ -78,3 +96,4 @@ if __name__ == "__main__":
 
     z, t_list, v_list = get_data(local_path, spacing=spacing)
     SD_freq = frequency_analysis(z, t_list, v_list)
+    plot_SD_freq(SD_freq)

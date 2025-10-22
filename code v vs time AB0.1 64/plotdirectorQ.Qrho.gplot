@@ -1,0 +1,10 @@
+set xrange[0:32]
+set yrange[0:32]
+unset key
+
+scale=0.7
+p'Qtensor.txt' u 1:2:15 w image,'Qtensor.txt' u 1:2:(scale*$12):(scale*$13) w vector nohead lc 2,'Qtensor.txt' u 1:2:(-scale*$12):(-scale*$13) w vector nohead lc 2 
+while (1) {
+      replot
+      pause 0.3
+}

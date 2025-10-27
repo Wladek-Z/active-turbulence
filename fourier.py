@@ -89,8 +89,8 @@ def plot_SD_freq(SD_freq):
     plt.show()
 
 if __name__ == "__main__":
-    system = "32"
-    local_path = Path(__file__).parent / f"velocity vs time {system}"
+    system = "64"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
     
     if system == "32":
         spacing = 10

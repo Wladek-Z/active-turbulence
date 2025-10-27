@@ -130,7 +130,8 @@ def mean_v_data():
             outfile.write(f"{zeta} {mean_speed}\n")
 
 if __name__ == "__main__":
-    local_path = Path(__file__).parent / "velocity vs time 32"
+    local_path = Path(__file__).parent / "velocity vs time AB0.1 64"
+    collect_zeta_data()
     mean_v_data()
-    
+    collect_SD_data()
     

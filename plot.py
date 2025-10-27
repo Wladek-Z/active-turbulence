@@ -15,13 +15,13 @@ def plot_vz(data):
     ymax = np.max(v)
 
     plt.figure(figsize=(8, 6))
-    plt.scatter(z, v, marker='+',  color='b', s=10)
-    #plt.plot(z, v, linestyle='-', color='b')
+    #plt.scatter(z, v, marker='+',  color='b', s=10)
+    plt.plot(z, v, linestyle='-', color='b')
     plt.xlabel(r'activity parameter ($\zeta$)')
     plt.ylabel(r'average velocity [$su$]')
     plt.title(rf'Velocity vs Activity (${system} \times {system}$ system)')
-    #plt.xlim(0.002, 0.0045) 
-    #plt.ylim(0, 0.0025)
+    plt.xlim(0.0002, 0.007) 
+    plt.ylim(0, 0.006)
     plt.grid(True)
     plt.show()
 
@@ -101,9 +101,9 @@ def plot_fft(data):
     plt.show()
 
 if __name__ == "__main__":
-    system = "32"
-    local_path = Path(__file__).parent / f"velocity vs time {system}"
-    file_path = local_path / 'velocity_.0100.dat'
+    system = "64"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
+    file_path = local_path / 'velocity_.0400.dat'
 
     data = np.loadtxt(file_path)
     

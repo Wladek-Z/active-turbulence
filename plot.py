@@ -25,6 +25,24 @@ def plot_vz(data):
     plt.grid(True)
     plt.show()
 
+def plot_v_rms(data):
+    """Plot root mean square velocity vs activity parameter"""
+    z = data[:, 0]
+    v = data[:, 1]
+
+    xmin = np.min(z)
+    xmax = np.max(z)
+    ymin = np.min(v)
+    ymax = np.max(v)
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(z, v, linestyle='-', color='b')
+    plt.xlabel(r'activity parameter ($\zeta$)')
+    plt.ylabel(r'$v_{rms}$ in steady-state [$su$]')
+    plt.title(rf'Root Mean Square Velocity vs Activity (${system} \times {system}$ system)')
+    plt.grid(True)
+    plt.show()
+
 def plot_SD(data):
     """Plot standard deviation of velocity vs activity parameter with shaded error region"""
     z = data[:, 0]
@@ -102,9 +120,9 @@ def plot_fft(data):
 
 if __name__ == "__main__":
     system = "64"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
-    file_path = local_path / 'velocity_.0400.dat'
+    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
+    file_path = local_path / 'v_rms_data.txt'
 
-    data = np.loadtxt(file_path)
+    data = np.loadtxt(file_path)[::5]
     
-    plot_fft(data)
+    plot_v_rms(data)

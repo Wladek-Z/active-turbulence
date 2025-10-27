@@ -129,9 +129,35 @@ def mean_v_data():
         for zeta, mean_speed in sorted(data):
             outfile.write(f"{zeta} {mean_speed}\n")
 
+def v_rms_data():
+    """Read last 200 lines of data, calculate the rms velocity for each file. Save to rms_v_data.txt"""
+    data = []  # will contain lists of [zeta, rms_speed]
+
+    for velocity in local_path.rglob("velocity_*.dat"):
+        # Extract the float number from the filename
+        filename = velocity.name  # e.g., "velocity_.002.dat"
+        match = re.search(r"velocity_([-+]?\d*\.?\d+)\.dat", filename)
+
+        if match:
+            zeta = float(match.group(1))
+
+            with open(velocity, 'r') as file:
+                lines = file.readlines()[-200:]  # Read last 200 lines
+                speeds_sq = [float(line.strip().split()[1])**2 for line in lines]
+                rms_speed = np.sqrt(np.mean(speeds_sq))
+
+            data.append([zeta, rms_speed])
+            
+        else:
+            print(f"Warning: No valid data found in file {velocity.name}")
+
+    # Save the collected data to a text file
+    with open(local_path / "v_rms_data.txt", 'w') as outfile:
+        outfile.write("# zeta    rms_speed\n")
+        for zeta, rms_speed in sorted(data):
+            outfile.write(f"{zeta} {rms_speed}\n")
+
 if __name__ == "__main__":
-    local_path = Path(__file__).parent / "velocity vs time AB0.1 64"
-    collect_zeta_data()
-    mean_v_data()
-    collect_SD_data()
+    local_path = Path(__file__).parent / "velocity vs time AB0.0 64"
+    v_rms_data()
     

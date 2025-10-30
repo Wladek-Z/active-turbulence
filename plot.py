@@ -120,9 +120,9 @@ def plot_fft(data):
 
 if __name__ == "__main__":
     system = "64"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'v_rms_data.txt'
+    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
+    file_path = local_path / 'velocity_.0006.dat'
 
-    data = np.loadtxt(file_path)[::5]
+    data = np.loadtxt(file_path)
     
-    plot_v_rms(data)
+    plot_vt(data)

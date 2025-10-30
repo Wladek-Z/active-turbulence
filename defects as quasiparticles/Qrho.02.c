@@ -82,6 +82,7 @@ double fold[Lx][Ly][Lz][15];
 double fpr[Lx][Ly][Lz][15];
 double fnew[Lx][Ly][Lz][15];
 
+double defectcharge[Lx][Ly][Lz];
 double flowparameter[Lx][Ly][Lz];
 double compressibility[Lx][Ly][Lz];
 
@@ -235,7 +236,7 @@ double laplacianphi[Lx][Ly][Lz];
 
 double DG2xx[Lx][Ly][Lz],DG2yy[Lx][Ly][Lz],DG2xy[Lx][Ly][Lz];
 double DG2xz[Lx][Ly][Lz],DG2yz[Lx][Ly][Lz],DG2zz[Lx][Ly][Lz],pG[Lx][Ly][Lz];
-double Abulk = 0.1; //1.0; /*determines bulk liquid crystal free energy*/
+double Abulk = 0.1; //0.0; /*determines bulk liquid crystal free energy*/
 double L1 = 0.01; //0.001 /*liquid crystal elastic constant*/
 double W = -0.00; // -0.01 /*anchoring term at interfaces*/
 double phivr = 1.0;
@@ -1327,7 +1328,7 @@ void Q_function(void)
 	double vxdQyydx, vydQyydy, vzdQyydz;
 	double vxdQyzdx, vydQyzdy, vzdQyzdz;
 
-    double Dyy,Dyz,Dzz,omegayz,DD,omega,omega2;
+	double Dyy,Dyz,Dzz,omegayz,Dxx,Dxy,omegaxy,DD,omega,omega2;
 
 	energy = 0.0;
 	for (i = 0; i < Lx; i++) {
@@ -1560,25 +1561,30 @@ void Q_function(void)
 	      duzdx = dx_(uz,i,j,k);
 	      duzdy = dy_(uz,i,j,k);
 	      duzdz = dz_(uz,i,j,k);
-            
-          Dyy=duydy;
-          Dyz=0.5*(duydz+duzdy);
-          Dzz=duzdz;
-          omegayz=0.5*(duzdy-duydz);
-          DD=0.5*(Dyy*Dyy+2.0*Dyz*Dyz+Dzz*Dzz);
-          DD=sqrt(DD);
-          omega2=0.5*(2.0*omegayz*omegayz);
-          omega=sqrt(omega2);
-            
-	      //flowparameter[i][j][k]=0.0;
 
+	      /*flow parameter computation start here - done for xy plane */
+	      
+	      Dxx=duxdx;
+	      Dxy=0.5*(duxdy+duydx);
+	      Dyy=duydy;
+	      omegaxy=0.5*(duydx-duxdy);
+	      DD=0.5*(Dxx*Dxx+2.0*Dxy*Dxy+Dyy*Dyy);
+	      DD=sqrt(DD);
+	      omega2=0.5*(2.0*omegaxy*omegaxy);
+	      omega=sqrt(omega2);
+            
 	      //if((DD+omega2)>0.0001) 
 
 	      flowparameter[i][j][k]=(DD-omega)/(DD+omega);
 
-	      compressibility[i][j][k]=(duydy+duzdz);
+	      /* topological charge density */
+	      defectcharge[i][j][k] = 1.0/(2.0*Pi)*(dx_(Qxx,i,j,k)*dy_(Qxy,i,j,k)-dx_(Qxy,i,j,k)*dy_(Qxx,i,j,k));
+	      
+	      compressibility[i][j][k]=(duxdx+duydy);
 
 	      //	      if(flowparameter[i][j][k]>100) fprintf(stderr,"%lf %lf %lf %lf %lf %lf %lf\n",DD,omega2,duydy,duydy,duydz,duzdz,flowparameter[i][j][k]);
+
+	      /* flow parameter computation up to here */
 
 	      /* -(Q+1/3) Tr(D.(Q+1/3)) term*/
 	      TrDQI= -(duxdx+duydy+duzdz)/3.0-
@@ -1955,7 +1961,7 @@ fprintf(output1, "%d %d %d %E %E %E %E %E %E %E %E %E %E %E %E %E %E %E %E %E\n"
 				  Qxx[i][j][k],Qxy[i][j][k],Qxz[i][j][k],Qyy[i][j][k],Qyz[i][j][k],
 				  ux[i][j][k], uy[i][j][k], uz[i][j][k],
 	                          v[0][emax],v[1][emax],v[2][emax],d[emax],
-				  mu[i][j][k],
+				  defectcharge[i][j][k],
 				  density[i][j][k],
 	                          phi[i][j][k],flowparameter[i][j][k],compressibility[i][j][k]);
 			}

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import re
 
-def get_data(directory, spacing=1):
+def get_data(directory):
     """Collect velocity and timestep data for each zeta value from files in the specified directory.
        If spacing > 1, take every 'spacing' data point to reduce data size."""
     zeta = []
@@ -21,7 +21,7 @@ def get_data(directory, spacing=1):
             zeta_val = float(match.group(1))
 
             with open(vel_file, 'r') as file:
-                lines = file.readlines()[-200:]  # Read last 200 lines
+                lines = file.readlines()[-50:]  # Read last 50 lines
                 timesteps = [float(line.strip().split()[0]) for line in lines]
                 velocities = [float(line.strip().split()[1]) for line in lines]
 
@@ -37,7 +37,7 @@ def get_data(directory, spacing=1):
     velocity_list = [velocity_list[i] for i in order]
     timestep_list = [timestep_list[i] for i in order]
 
-    return zeta[::spacing], timestep_list[::spacing], velocity_list[::spacing]
+    return zeta, timestep_list, velocity_list
 
 def frequency_analysis(z, t_list, v_list):
     """Perform Fourier analysis to find the standard deviation of the frequency spectrum for each zeta value."""
@@ -62,7 +62,7 @@ def frequency_analysis(z, t_list, v_list):
         if sum_FT_squared == 0:
             print(f"Warning: Sum of FT^2 is {sum_FT_squared} for zeta={zeta}. Signal likely too constant.")
             avg_nu = avg_nu2 = 0
-            start = i+1
+            #start = i+1
         else:
             avg_nu = np.sum(nu * FT**2) / sum_FT_squared
             avg_nu2 = np.sum(nu**2 * FT**2) / sum_FT_squared
@@ -72,16 +72,16 @@ def frequency_analysis(z, t_list, v_list):
 
         SD_freq.append([zeta, SD_nu])
     
-    return SD_freq[start:] # [0]: zeta, [1]: SD of frequency
+    return SD_freq # [0]: zeta, [1]: SD of frequency
 
-def plot_SD_freq(SD_freq):
+def plot_SD_freq(SD_freq, spacing=1):
     """Plot standard deviation of frequency vs activity parameter"""
     SD_freq = np.array(SD_freq)
     z = SD_freq[:, 0]
     SD_nu = SD_freq[:, 1]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(z, SD_nu, color='m')
+    plt.plot(z[::spacing], SD_nu[::spacing], color='m')
     plt.xlabel(r'activity parameter ($\zeta$)')
     plt.ylabel(r'standard deviation of frequency [cycles timestep$^{-1}$]')
     plt.title(rf'Standard Deviation of Frequency vs Activity (${system} \times {system}$ system)')
@@ -90,13 +90,13 @@ def plot_SD_freq(SD_freq):
 
 if __name__ == "__main__":
     system = "64"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
     
     if system == "32":
-        spacing = 10
+        spacing = 4
     elif system == "64":
-        spacing = 5
+        spacing = 4
 
-    z, t_list, v_list = get_data(local_path, spacing=spacing)
+    z, t_list, v_list = get_data(local_path)
     SD_freq = frequency_analysis(z, t_list, v_list)
-    plot_SD_freq(SD_freq)
+    plot_SD_freq(SD_freq, spacing=spacing)

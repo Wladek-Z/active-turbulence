@@ -86,7 +86,7 @@ def plot_mean_v(data):
 
 def plot_fft(data):
     """Plot FFT of velocity data"""
-    d = data[-200:]
+    d = data[-50:]
     t = d[:, 0]
     v = d[:, 1]
 
@@ -119,10 +119,10 @@ def plot_fft(data):
     plt.show()
 
 if __name__ == "__main__":
-    system = "64"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
-    file_path = local_path / 'velocity_.0006.dat'
+    system = "32"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
+    file_path = local_path / 'SD_data.txt'
 
-    data = np.loadtxt(file_path)
+    data = np.loadtxt(file_path)[::8]
     
-    plot_vt(data)
+    plot_SD(data)

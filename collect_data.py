@@ -31,7 +31,7 @@ def collect_zeta_data():
             outfile.write(f"{zeta} {avg_speed}\n")
 
 def collect_SD_data():
-    """Read last 200 lines of data, calculate the standard deviation of velocity for each file. Save to SD_data.txt"""
+    """Read last 50 lines of data, calculate the standard deviation of velocity for each file. Save to SD_data.txt"""
     data = []  # will contain lists of [zeta, SD, SD_err]
 
     for velocity in local_path.rglob("velocity_*.dat"):
@@ -44,7 +44,7 @@ def collect_SD_data():
             zeta = float(match.group(1))
 
             with open(velocity, 'r') as file:
-                lines = file.readlines()[-200:]  # Read last 200 lines
+                lines = file.readlines()[-50:]  # Read last 50 lines
                 speeds = [float(line.strip().split()[1]) for line in lines]
                 SD = np.std(speeds)
                 res = bootstrap(
@@ -158,6 +158,6 @@ def v_rms_data():
             outfile.write(f"{zeta} {rms_speed}\n")
 
 if __name__ == "__main__":
-    local_path = Path(__file__).parent / "velocity vs time AB0.0 64"
-    v_rms_data()
+    local_path = Path(__file__).parent / "velocity vs time AB0.0 32"
+    collect_SD_data()
     

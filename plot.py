@@ -121,8 +121,8 @@ def plot_fft(data):
 if __name__ == "__main__":
     system = "32"
     local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'SD_data.txt'
+    file_path = local_path / 'velocity_.0300.dat'
 
-    data = np.loadtxt(file_path)[::8]
+    data = np.loadtxt(file_path)[::1]
     
-    plot_SD(data)
+    plot_fft(data)

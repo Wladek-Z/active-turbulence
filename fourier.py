@@ -62,7 +62,7 @@ def frequency_analysis(z, t_list, v_list):
         if sum_FT_squared == 0:
             print(f"Warning: Sum of FT^2 is {sum_FT_squared} for zeta={zeta}. Signal likely too constant.")
             avg_nu = avg_nu2 = 0
-            #start = i+1
+            #start = i+1 # start from next index
         else:
             avg_nu = np.sum(nu * FT**2) / sum_FT_squared
             avg_nu2 = np.sum(nu**2 * FT**2) / sum_FT_squared
@@ -72,7 +72,7 @@ def frequency_analysis(z, t_list, v_list):
 
         SD_freq.append([zeta, SD_nu])
     
-    return SD_freq # [0]: zeta, [1]: SD of frequency
+    return SD_freq#[start:] # [0]: zeta, [1]: SD of frequency
 
 def plot_SD_freq(SD_freq, spacing=1):
     """Plot standard deviation of frequency vs activity parameter"""

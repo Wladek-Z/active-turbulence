@@ -81,22 +81,66 @@ def plot_SD_freq(SD_freq, spacing=1):
     SD_nu = SD_freq[:, 1]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(z[::spacing], SD_nu[::spacing], color='m')
-    plt.xlabel(r'activity parameter ($\zeta$)')
-    plt.ylabel(r'standard deviation of frequency [cycles timestep$^{-1}$]')
-    plt.title(rf'Standard Deviation of Frequency vs Activity (${system} \times {system}$ system)')
+    plt.plot(z[::spacing], SD_nu[::spacing], color='m', label=f'{system}x{system} system')
+    plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
+    plt.ylabel(r'$\sigma(\nu)$ [cycles timestep$^{-1}$]', fontsize=12)
+    #plt.title(rf'Standard Deviation of Frequency vs. Activity', fontsize=16)
     plt.grid(True)
+    plt.legend(loc='lower right')
+    plt.show()
+
+def plot_both(data32, data64, spacing32, spacing64):
+    """Plot standard deviation of frequency vs activity parameter for both 32x32 and 64x64 systems."""
+    data32 = np.array(data32)
+    data64 = np.array(data64)
+
+    z32 = data32[:, 0]
+    SD_nu32 = data32[:, 1]
+
+    z64 = data64[:, 0]
+    SD_nu64 = data64[:, 1]
+
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+
+    #fig.suptitle(rf'Standard Deviation of Frequency vs. Activity', fontsize=16)
+
+    ax[0].plot(z32[::spacing32], SD_nu32[::spacing32], label='32x32 system', color='m')
+    ax[0].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
+    ax[0].set_ylabel(r'$\sigma(\nu)$ [cycles timestep$^{-1}$]', fontsize=12)
+    ax[0].legend(loc='lower right')
+    ax[0].grid(True)
+
+    ax[1].plot(z64[::spacing64], SD_nu64[::spacing64], label='64x64 system', color='m')
+    ax[1].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
+    #ax[1].set_ylabel(r'standard deviation of frequency [cycles timestep$^{-1}$]')
+    ax[1].legend(loc='lower right')
+    ax[1].grid(True)
+    
+    plt.tight_layout()  # Add extra padding at bottom
     plt.show()
 
 if __name__ == "__main__":
+    
     system = "64"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
     
     if system == "32":
         spacing = 4
     elif system == "64":
-        spacing = 4
+        spacing = 2
 
     z, t_list, v_list = get_data(local_path)
     SD_freq = frequency_analysis(z, t_list, v_list)
     plot_SD_freq(SD_freq, spacing=spacing)
+    """
+    local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
+    local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
+
+    z32, t_list32, v_list32 = get_data(local_path32)
+    SD_freq32 = frequency_analysis(z32, t_list32, v_list32)
+
+    z64, t_list64, v_list64 = get_data(local_path64)
+    SD_freq64 = frequency_analysis(z64, t_list64, v_list64)
+
+    plot_both(SD_freq32, SD_freq64, spacing32=4, spacing64=2)
+    """

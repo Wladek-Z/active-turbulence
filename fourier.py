@@ -120,7 +120,7 @@ def plot_both(data32, data64, spacing32, spacing64):
     plt.show()
 
 if __name__ == "__main__":
-    
+    """
     system = "64"
     local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
     
@@ -143,4 +143,4 @@ if __name__ == "__main__":
     SD_freq64 = frequency_analysis(z64, t_list64, v_list64)
 
     plot_both(SD_freq32, SD_freq64, spacing32=4, spacing64=2)
-    """
+    

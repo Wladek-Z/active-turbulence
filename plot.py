@@ -138,7 +138,7 @@ def plot_both_mean_vz(data32, data64):
 
     ax[0].plot(z32, v32, label='32x32 system', color='b')
     ax[0].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
-    ax[0].set_ylabel(r'$\langle v \rangle$ in steady-state [$su$]', fontsize=12)
+    ax[0].set_ylabel(r'$\langle v \rangle$ in steady-state [su]', fontsize=12)
     ax[0].legend(loc='lower right')
     ax[0].grid(True)
 
@@ -186,7 +186,7 @@ def plot_both_SD(data32, data64):
     plt.show()
 
 if __name__ == "__main__":
-    
+    """
     system = "32"
     local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
     file_path = local_path / 'velocity_.0900.dat'
@@ -205,4 +205,4 @@ if __name__ == "__main__":
     data64 = np.loadtxt(file_path64)[::2]
 
     plot_both_mean_vz(data32, data64)
-    """
+    

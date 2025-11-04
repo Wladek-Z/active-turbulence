@@ -588,4 +588,30 @@
   publisher    = {The Royal Society},
 }
 
+@Article{Cates_2009,
+  author       = {Cates, M. E. and Henrich, O. and Marenduzzo, D. and Stratford, K.},
+  title        = {Lattice Boltzmann simulations of liquid crystalline fluids: active gels and blue phases},
+  volume       = {5},
+  number       = {20},
+  pages        = {3791},
+  issn         = {1744-6848},
+  date         = {2009},
+  doi          = {10.1039/b908659p},
+  journaltitle = {Soft Matter},
+  publisher    = {Royal Society of Chemistry (RSC)},
+}
+
+@Article{Orlandini_2008,
+  author       = {Orlandini, E. and Cates, M. E. and Marenduzzo, D. and Tubiana, L. and Yeomans, J. M.},
+  title        = {Hydrodynamic of Active Liquid Crystals: A Hybrid Lattice Boltzmann Approach},
+  volume       = {494},
+  number       = {1},
+  pages        = {293--308},
+  issn         = {1563-5287},
+  date         = {2008-12},
+  doi          = {10.1080/15421400802430117},
+  journaltitle = {Molecular Crystals and Liquid Crystals},
+  publisher    = {Informa UK Limited},
+}
+
 @Comment{jabref-meta: databaseType:bibtex;}

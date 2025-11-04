@@ -187,14 +187,14 @@ def plot_both_SD(data32, data64):
     plt.show()
 
 if __name__ == "__main__":
-    """
+    
     system = "32"
     local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'velocity_.0900.dat'
+    file_path = local_path / 'velocity_.0400.dat'
 
-    data = np.loadtxt(file_path)[::4]
+    data = np.loadtxt(file_path)[::1]
     
-    plot_SD(data)
+    plot_vt(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
@@ -206,4 +206,4 @@ if __name__ == "__main__":
     data64 = np.loadtxt(file_path64)[::4]
 
     plot_both_mean_vz(data32, data64)
-    
+    """

@@ -19,7 +19,7 @@ def plot_vz(data):
     plt.plot(z, v, linestyle='-', color='b')
     plt.xlabel(r'activity parameter ($\zeta$)')
     plt.ylabel(r'average velocity [su]')
-    plt.title(rf'Velocity vs Activity (${system} \times {system}$ system)')
+    plt.title(rf'Velocity vs Activity (${system} \times {system}$)')
     plt.xlim(0.0002, 0.007) 
     plt.ylim(0, 0.006)
     plt.grid(True)
@@ -45,18 +45,19 @@ def plot_v_rms(data):
 
 def plot_SD(data):
     """Plot standard deviation of velocity vs activity parameter with shaded error region"""
-    z = data[:, 0]
-    SD = data[:, 1]
-    SD_err = data[:, 2]
+    data1 = data[::4]  # downsample for clarity
+    z = data1[:, 0]
+    SD = data1[:, 1]
+    SD_err = data1[:, 2]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(z, SD, linestyle='-', color='r', label=f'{system}x{system} system')
+    plt.plot(z, SD, linestyle='-', color='r', label=rf'{system}$\times${system}')
     plt.fill_between(z, SD - SD_err, SD + SD_err, color='r', alpha=0.2)
     plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     plt.ylabel(r'$\sigma (\nu)$ [su]', fontsize=12)
     #plt.title(rf'Standard Deviation of Velocity vs Activity (${system} \times {system}$ system)')
     plt.grid(True)
-    plt.legend(loc='lower right')
+    plt.legend(loc='upper left')
     plt.show()
 
 def plot_vt(data):
@@ -65,26 +66,27 @@ def plot_vt(data):
     v = data[:, 1]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(t, v, linestyle='-', color='g', label=f'{system}x{system} system')
+    plt.plot(t, v, linestyle='-', color='g', label=rf'${system} \times {system}$')
     plt.xlabel('timestep', fontsize=12)
     plt.ylabel(r'$\overline{v}$ [su]', fontsize=12)
     #plt.title(rf'Average Velocity Evolution (${system} \times {system}$ system)')
     plt.grid(True)
-    plt.legend(loc='lower right')
+    plt.legend()
     plt.show()
 
 def plot_mean_v(data):
     """Plot mean velocity in steady-state against activity parameter"""
-    z = data[:, 0]
-    v = data[:, 1]
+    data1 = data[::2]
+    z = data1[:, 0]
+    v = data1[:, 1]
 
     plt.figure(figsize=(8, 6))
-    plt.plot(z, v, linestyle='-', color='b', label=f'{system}x{system} system')
+    plt.plot(z, v, linestyle='-', color='b', label=rf'${system} \times {system}$')
     plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     plt.ylabel(r'$\langle v \rangle$ in steady-state [su]', fontsize=12)
     #plt.title(rf'Mean Velocity vs Activity (${system} \times {system}$ system)')
     plt.grid(True)
-    plt.legend(loc='lower right')
+    plt.legend()
     plt.show()
 
 def plot_fft(data):
@@ -123,8 +125,8 @@ def plot_fft(data):
 
 def plot_both_mean_vz(data32, data64):
     """Plot mean velocity in steady-state vs activity parameter for both 32x32 and 64x64 systems."""
-    data32 = np.array(data32)
-    data64 = np.array(data64)
+    data32 = np.array(data32)[::4]
+    data64 = np.array(data64)[::2]
 
     z32 = data32[:, 0]
     v32 = data32[:, 1]
@@ -136,17 +138,17 @@ def plot_both_mean_vz(data32, data64):
 
     #fig.suptitle(rf'Mean Velocity in Steady-State vs. Activity', fontsize=16)
 
-    ax[0].plot(z32, v32, label='32x32 system', color='b')
+    ax[0].plot(z32, v32, label=r'32$\times$32', color='b')
     ax[0].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     ax[0].set_ylabel(r'$\langle v \rangle$ in steady-state [su]', fontsize=12)
     ax[0].set_ylabel(r'$\langle v \rangle$ in steady-state [su]', fontsize=12)
-    ax[0].legend(loc='lower right')
+    ax[0].legend()
     ax[0].grid(True)
 
-    ax[1].plot(z64, v64, label='64x64 system', color='b')
+    ax[1].plot(z64, v64, label=r'64$\times$64', color='b')
     ax[1].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     #ax[1].set_ylabel(r'mean velocity in steady-state [$su$]', fontsize=12)
-    ax[1].legend(loc='lower right')
+    ax[1].legend()
     ax[1].grid(True)
 
     plt.tight_layout()  # Add extra padding at bottom
@@ -154,8 +156,8 @@ def plot_both_mean_vz(data32, data64):
 
 def plot_both_SD(data32, data64):
     """Plot standard deviation of velocity vs activity parameter for both 32x32 and 64x64 systems."""
-    data32 = np.array(data32)
-    data64 = np.array(data64)
+    data32 = np.array(data32)[::8]
+    data64 = np.array(data64)[::4]
 
     z32 = data32[:, 0]
     SD32 = data32[:, 1]
@@ -169,18 +171,18 @@ def plot_both_SD(data32, data64):
 
     #fig.suptitle(rf'Standard Deviation of Velocity vs. Activity', fontsize=16)
 
-    ax[0].plot(z32, SD32, label='32x32 system', color='r')
+    ax[0].plot(z32, SD32, label=r'32$\times$32', color='r')
     ax[0].fill_between(z32, SD32 - SD_err32, SD32 + SD_err32, color='r', alpha=0.2)
     ax[0].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     ax[0].set_ylabel(r'$\sigma(v)$ [su]', fontsize=12)
-    ax[0].legend(loc='lower right')
+    ax[0].legend(loc='upper left')
     ax[0].grid(True)
 
-    ax[1].plot(z64, SD64, label='64x64 system', color='r')
+    ax[1].plot(z64, SD64, label=r'64$\times$64', color='r')
     ax[1].fill_between(z64, SD64 - SD_err64, SD64 + SD_err64, color='r', alpha=0.2)
     ax[1].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     #ax[1].set_ylabel(r'standard deviation of velocity [$su$]', fontsize=12)
-    ax[1].legend(loc='lower right')
+    ax[1].legend(loc='upper left')
     ax[1].grid(True)
     
     plt.tight_layout()  # Add extra padding at bottom
@@ -188,13 +190,13 @@ def plot_both_SD(data32, data64):
 
 if __name__ == "__main__":
     
-    system = "32"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'velocity_.0400.dat'
+    system = "64"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
+    file_path = local_path / 'mean_v_data.txt'
 
-    data = np.loadtxt(file_path)[::1]
+    data = np.loadtxt(file_path)
     
-    plot_vt(data)
+    plot_mean_v(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
@@ -202,8 +204,8 @@ if __name__ == "__main__":
     file_path32 = local_path32 / 'SD_data.txt'
     file_path64 = local_path64 / 'SD_data.txt'
 
-    data32 = np.loadtxt(file_path32)[::8]
-    data64 = np.loadtxt(file_path64)[::4]
+    data32 = np.loadtxt(file_path32)
+    data64 = np.loadtxt(file_path64)
 
-    plot_both_mean_vz(data32, data64)
+    plot_both_SD(data32, data64)
     """

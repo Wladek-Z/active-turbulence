@@ -1,4 +1,6 @@
 import scipy.fft as fft
+from scipy.signal import savgol_filter
+from scipy.ndimage import gaussian_filter1d
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -80,8 +82,11 @@ def plot_SD_freq(SD_freq, spacing=1):
     z = SD_freq[:, 0]
     SD_nu = SD_freq[:, 1]
 
+    smoothed = gaussian_filter1d(SD_nu, sigma=6)
+
     plt.figure(figsize=(8, 6))
-    plt.plot(z[::spacing], SD_nu[::spacing], color='m', label=f'{system}x{system} system')
+    plt.plot(z[::spacing], SD_nu[::spacing], color='m', label=rf'{system}$\times${system} unfiltered', alpha=0.2)
+    plt.plot(z[::spacing], smoothed[::spacing], color='m', label='Gaussian filtered')
     plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     plt.ylabel(r'$\sigma(\nu)$ [cycles timestep$^{-1}$]', fontsize=12)
     #plt.title(rf'Standard Deviation of Frequency vs. Activity', fontsize=16)
@@ -100,34 +105,39 @@ def plot_both(data32, data64, spacing32, spacing64):
     z64 = data64[:, 0]
     SD_nu64 = data64[:, 1]
 
+    smoothed32 = gaussian_filter1d(SD_nu32, sigma=6)
+    smoothed64 = gaussian_filter1d(SD_nu64, sigma=6)
+
     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
 
     #fig.suptitle(rf'Standard Deviation of Frequency vs. Activity', fontsize=16)
 
-    ax[0].plot(z32[::spacing32], SD_nu32[::spacing32], label='32x32 system', color='m')
+    ax[0].plot(z32[::spacing32], SD_nu32[::spacing32], label=r'32$\times$32 unfiltered', color='m', alpha=0.2)
+    ax[0].plot(z32[::spacing32], smoothed32[::spacing32], label='Gaussian filtered', color='m')
     ax[0].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     ax[0].set_ylabel(r'$\sigma(\nu)$ [cycles timestep$^{-1}$]', fontsize=12)
-    ax[0].legend(loc='lower right')
+    ax[0].legend()
     ax[0].grid(True)
 
-    ax[1].plot(z64[::spacing64], SD_nu64[::spacing64], label='64x64 system', color='m')
+    ax[1].plot(z64[::spacing64], SD_nu64[::spacing64], label=r'64$\times$64 unfiltered', color='m', alpha=0.2)
+    ax[1].plot(z64[::spacing64], smoothed64[::spacing64], label='Gaussian filtered', color='m')
     ax[1].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
     #ax[1].set_ylabel(r'standard deviation of frequency [cycles timestep$^{-1}$]')
-    ax[1].legend(loc='lower right')
+    ax[1].legend()
     ax[1].grid(True)
     
     plt.tight_layout()  # Add extra padding at bottom
     plt.show()
 
 if __name__ == "__main__":
-    """
+    
     system = "64"
     local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
     
     if system == "32":
-        spacing = 4
+        spacing = 1 #4
     elif system == "64":
-        spacing = 2
+        spacing = 1 #2
 
     z, t_list, v_list = get_data(local_path)
     SD_freq = frequency_analysis(z, t_list, v_list)
@@ -142,5 +152,5 @@ if __name__ == "__main__":
     z64, t_list64, v_list64 = get_data(local_path64)
     SD_freq64 = frequency_analysis(z64, t_list64, v_list64)
 
-    plot_both(SD_freq32, SD_freq64, spacing32=4, spacing64=2)
-    
+    plot_both(SD_freq32, SD_freq64, spacing32=1, spacing64=1)
+    """

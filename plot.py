@@ -54,7 +54,7 @@ def plot_SD(data):
     plt.plot(z, SD, linestyle='-', color='r', label=rf'{system}$\times${system}')
     plt.fill_between(z, SD - SD_err, SD + SD_err, color='r', alpha=0.2)
     plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
-    plt.ylabel(r'$\sigma (\nu)$ [su]', fontsize=12)
+    plt.ylabel(r'$\sigma (v)$ [su]', fontsize=12)
     #plt.title(rf'Standard Deviation of Velocity vs Activity (${system} \times {system}$ system)')
     plt.grid(True)
     plt.legend(loc='upper left')
@@ -191,12 +191,12 @@ def plot_both_SD(data32, data64):
 if __name__ == "__main__":
     
     system = "64"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
-    file_path = local_path / 'mean_v_data.txt'
+    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
+    file_path = local_path / 'velocity_.0150.dat'
 
     data = np.loadtxt(file_path)
     
-    plot_mean_v(data)
+    plot_vt(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"

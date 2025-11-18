@@ -269,15 +269,15 @@ def plot_both_vt_fft(data1, data2):
 
 
 if __name__ == "__main__":
-    """
-    system = "64"
+    
+    system = "32"
     local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'SD_data.txt'
+    file_path = local_path / 'velocity_.0308.dat'
 
     data = np.loadtxt(file_path)
     
-    plot_both_error(data)
-    """"""
+    plot_vt(data)
+    """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
 
@@ -288,7 +288,7 @@ if __name__ == "__main__":
     data64 = np.loadtxt(file_path64)
 
     plot_both_error(data32, data64)
-    """
+    """"""
     system = "32"
     local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
     file_path1 = local_path / 'velocity_.0200.dat'
@@ -298,3 +298,4 @@ if __name__ == "__main__":
     data2 = np.loadtxt(file_path2)
 
     plot_both_vt_fft(data1, data2)
+    """

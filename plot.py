@@ -221,6 +221,52 @@ def plot_both_error(data32, data64):
     plt.tight_layout()  # Add extra padding at bottom
     plt.show()
 
+def plot_both_vt_fft(data1, data2):
+    """plot the velocity vs time data in the top row, and the FFT in the bottom row for two datasets."""
+    t1 = data1[:, 0]
+    v1 = data1[:, 1]
+
+    t2 = data2[:, 0]
+    v2 = data2[:, 1]
+
+    # Compute the original FFT for both datasets
+    dft1 = rfft(v1[-50:])
+    dft1[0] = 0
+    dft1 = np.abs(dft1)
+    freq1 = rfftfreq(len(t1[-50:]), d=(t1[1] - t1[0]))
+
+    dft2 = rfft(v2[-50:])
+    dft2[0] = 0
+    dft2 = np.abs(dft2)
+    freq2 = rfftfreq(len(t2[-50:]), d=(t2[1] - t2[0]))
+
+    fig, ax = plt.subplots(2, 2, figsize=(10, 8))
+
+    # Top row: velocity vs time
+    ax[0, 0].plot(t1, v1, linestyle='-', color='g')
+    ax[0, 0].set_xlabel('timestep', fontsize=12)
+    ax[0, 0].set_ylabel(r'$\overline{v}$ [su]', fontsize=12)
+    ax[0, 0].set_title(r"$\zeta = 0.0200$")
+    ax[0, 0].grid(True)
+
+    ax[0, 1].plot(t2, v2, linestyle='-', color='g')
+    ax[0, 1].set_xlabel('timestep', fontsize=12)
+    ax[0, 1].set_title(r"$\zeta = 0.0800$")
+    ax[0, 1].grid(True)
+
+    # Bottom row: FFT plots
+    ax[1, 0].plot(freq1, dft1, linestyle='-', color='orange')
+    ax[1, 0].set_xlabel(r'Frequency [cycles timestep$^{-1}$]')
+    ax[1, 0].set_ylabel('|DFT|')
+    ax[1, 0].grid(True)
+
+    ax[1, 1].plot(freq2, dft2, linestyle='-', color='orange')
+    ax[1, 1].set_xlabel(r'Frequency [cycles timestep$^{-1}$]')
+    ax[1, 1].grid(True)
+
+    plt.tight_layout()  # Add extra padding at bottom
+    plt.show()
+
 
 if __name__ == "__main__":
     """
@@ -231,7 +277,7 @@ if __name__ == "__main__":
     data = np.loadtxt(file_path)
     
     plot_both_error(data)
-    """
+    """"""
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
 
@@ -242,4 +288,13 @@ if __name__ == "__main__":
     data64 = np.loadtxt(file_path64)
 
     plot_both_error(data32, data64)
-    
+    """
+    system = "32"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
+    file_path1 = local_path / 'velocity_.0200.dat'
+    file_path2 = local_path / 'velocity_.0800.dat'
+
+    data1 = np.loadtxt(file_path1)
+    data2 = np.loadtxt(file_path2)
+
+    plot_both_vt_fft(data1, data2)

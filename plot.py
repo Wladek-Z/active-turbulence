@@ -188,15 +188,49 @@ def plot_both_SD(data32, data64):
     plt.tight_layout()  # Add extra padding at bottom
     plt.show()
 
-if __name__ == "__main__":
+
+def plot_both_error(data32, data64):
+    """Plot standard deviation of velocity vs activity parameter for both 32x32 and 64x64 systems."""
+    data32 = np.array(data32)[::8]
+    data64 = np.array(data64)[::4]
+
+    z32 = data32[:, 0]
+    SD32 = data32[:, 1]
+    SD_err32 = data32[:, 2]
+
+    z64 = data64[:, 0]
+    SD64 = data64[:, 1]
+    SD_err64 = data64[:, 2]
+
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+
+    #fig.suptitle(rf'Standard Deviation of Velocity vs. Activity', fontsize=16)
+
+    ax[0].plot(z32, SD_err32, color='r')
+    ax[0].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
+    ax[0].set_ylabel(r'error on $\sigma(v)$ [su]', fontsize=12)
+    ax[0].legend(loc='upper left')
+    ax[0].grid(True)
+
+    ax[1].plot(z64, SD_err64, color='r')
+    ax[1].set_xlabel(r'activity parameter ($\zeta$)', fontsize=12)
+    #ax[1].set_ylabel(r'standard deviation of velocity [$su$]', fontsize=12)
+    ax[1].legend(loc='upper left')
+    ax[1].grid(True)
     
+    plt.tight_layout()  # Add extra padding at bottom
+    plt.show()
+
+
+if __name__ == "__main__":
+    """
     system = "64"
     local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'velocity_.0150.dat'
+    file_path = local_path / 'SD_data.txt'
 
     data = np.loadtxt(file_path)
     
-    plot_vt(data)
+    plot_both_error(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
@@ -207,5 +241,5 @@ if __name__ == "__main__":
     data32 = np.loadtxt(file_path32)
     data64 = np.loadtxt(file_path64)
 
-    plot_both_SD(data32, data64)
-    """
+    plot_both_error(data32, data64)
+    

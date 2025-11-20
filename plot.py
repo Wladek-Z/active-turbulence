@@ -270,9 +270,9 @@ def plot_both_vt_fft(data1, data2):
 
 if __name__ == "__main__":
     
-    system = "32"
-    local_path = Path(__file__).parent / f"velocity vs time AB0.0 {system}"
-    file_path = local_path / 'velocity_.0308.dat'
+    system = "64"
+    local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
+    file_path = local_path / 'velocity_.0040.dat'
 
     data = np.loadtxt(file_path)
     

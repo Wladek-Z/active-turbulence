@@ -60,6 +60,22 @@ def plot_SD(data):
     plt.legend(loc='upper left')
     plt.show()
 
+def plot_error(data):
+    """Plot error alone of standard deviation of velocity vs activity parameter"""
+    data1 = data[::4]  # downsample for clarity
+    z = data1[:, 0]
+    SD_err = data1[:, 2]
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(z, SD_err, linestyle='-', color='r', label=rf'{system}$\times${system}')
+    plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
+    plt.ylabel(r'$\sigma (v)$ [su]', fontsize=12)
+    #plt.title(rf'Standard Deviation of Velocity vs Activity (${system} \times {system}$ system)')
+    plt.grid(True)
+    plt.legend(loc='upper left')
+    plt.show()
+
+
 def plot_vt(data):
     """Plot average velocity against timestep"""
     t = data[:, 0]
@@ -272,11 +288,11 @@ if __name__ == "__main__":
     
     system = "64"
     local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
-    file_path = local_path / 'velocity_.0040.dat'
+    file_path = local_path / 'SD_data.txt'
 
     data = np.loadtxt(file_path)
     
-    plot_vt(data)
+    plot_error(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"

@@ -50,14 +50,17 @@ def plot_SD(data):
     SD = data1[:, 1]
     SD_err = data1[:, 2]
 
-    plt.figure(figsize=(8, 6))
-    plt.plot(z, SD, linestyle='-', color='r', label=rf'{system}$\times${system}')
+    plt.figure(figsize=(10, 8))
+    plt.plot(z, SD, linestyle='-', color='r')#, label=rf'{system}$\times${system}')
     plt.fill_between(z, SD - SD_err, SD + SD_err, color='r', alpha=0.2)
-    plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
-    plt.ylabel(r'$\sigma (v)$ [su]', fontsize=12)
-    #plt.title(rf'Standard Deviation of Velocity vs Activity (${system} \times {system}$ system)')
-    plt.grid(True)
-    plt.legend(loc='upper left')
+    plt.xlabel(r'activity strength ($\zeta$)', fontsize=20)
+    plt.ylabel(r'$\sigma (v)$ [simulation units]', fontsize=20)
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    plt.grid(False)
+    plt.legend(loc='lower right', fontsize=16)
+    plt.xticks(ticks=[0, 0.01, 0.02, 0.03, 0.04, 0.05], fontsize=18)
+    plt.yticks(fontsize=18)
+    #plt.legend(loc='upper left')
     plt.show()
 
 def plot_error(data):
@@ -292,7 +295,7 @@ if __name__ == "__main__":
 
     data = np.loadtxt(file_path)
     
-    plot_error(data)
+    plot_SD(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"

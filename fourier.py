@@ -1,5 +1,4 @@
 import scipy.fft as fft
-from scipy.signal import savgol_filter
 from scipy.ndimage import gaussian_filter1d
 import numpy as np
 import matplotlib.pyplot as plt
@@ -84,14 +83,16 @@ def plot_SD_freq(SD_freq, spacing=1):
 
     smoothed = gaussian_filter1d(SD_nu, sigma=6)
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(10, 8))
     plt.plot(z[::spacing], SD_nu[::spacing], color='m', label=rf'{system}$\times${system} unfiltered', alpha=0.2)
     plt.plot(z[::spacing], smoothed[::spacing], color='m', label='Gaussian filtered')
-    plt.xlabel(r'activity parameter ($\zeta$)', fontsize=12)
-    plt.ylabel(r'$\sigma(\nu)$ [cycles timestep$^{-1}$]', fontsize=12)
-    #plt.title(rf'Standard Deviation of Frequency vs. Activity', fontsize=16)
+    plt.xlabel(r'activity parameter ($\zeta$)', fontsize=20)
+    plt.ylabel(r'$\sigma(\nu)$ [cycles timestep$^{-1}$]', fontsize=20)
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     plt.grid(True)
-    plt.legend(loc='lower right')
+    plt.legend(loc='lower right', fontsize=16)
+    plt.xticks(ticks=[0, 0.01, 0.02, 0.03, 0.04, 0.05], fontsize=16)
+    plt.yticks(ticks=[0, 1e-4, 2e-4, 3e-4], fontsize=16)
     plt.show()
 
 def plot_both(data32, data64, spacing32, spacing64):

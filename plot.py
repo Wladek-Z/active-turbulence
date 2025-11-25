@@ -50,15 +50,17 @@ def plot_SD(data):
     SD = data1[:, 1]
     SD_err = data1[:, 2]
 
-    plt.figure(figsize=(10, 8))
-    plt.plot(z, SD, linestyle='-', color='r')#, label=rf'{system}$\times${system}')
-    plt.fill_between(z, SD - SD_err, SD + SD_err, color='r', alpha=0.2)
+    up_range = 45
+
+    plt.figure(figsize=(8, 8))
+    plt.plot(z[:up_range], SD[:up_range], linestyle='-', color='r')#, label=rf'{system}$\times${system}')
+    plt.fill_between(z[:up_range], SD[:up_range] - SD_err[:up_range], SD[:up_range] + SD_err[:up_range], color='r', alpha=0.2)
     plt.xlabel(r'activity strength ($\zeta$)', fontsize=20)
     plt.ylabel(r'$\sigma (v)$ [simulation units]', fontsize=20)
     plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     plt.grid(False)
-    plt.legend(loc='lower right', fontsize=16)
-    plt.xticks(ticks=[0, 0.01, 0.02, 0.03, 0.04, 0.05], fontsize=18)
+    #plt.legend(loc='lower right', fontsize=16)
+    plt.xticks(ticks=[0,0.01,0.02,0.03],fontsize=18)
     plt.yticks(fontsize=18)
     #plt.legend(loc='upper left')
     plt.show()
@@ -81,16 +83,19 @@ def plot_error(data):
 
 def plot_vt(data):
     """Plot average velocity against timestep"""
-    t = data[:, 0]
-    v = data[:, 1]
+    t = data[:, 0][50:]
+    v = data[:, 1][50:]
 
-    plt.figure(figsize=(8, 6))
-    plt.plot(t, v, linestyle='-', color='g', label=rf'${system} \times {system}$')
-    plt.xlabel('timestep', fontsize=12)
-    plt.ylabel(r'$\overline{v}$ [su]', fontsize=12)
+    plt.figure(figsize=(8,7))
+    plt.plot(t, v, linestyle='-', color='r', label=rf'${system} \times {system}$')
+    plt.xlabel('timestep', fontsize=20)
+    plt.ylabel(r'$\overline{v}$ [simulation units]', fontsize=20)
+    plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
     #plt.title(rf'Average Velocity Evolution (${system} \times {system}$ system)')
-    plt.grid(True)
-    plt.legend()
+    #plt.grid(True)
+    #plt.legend()
+    plt.xticks([40000, 80000, 120000], fontsize=18)
+    plt.yticks([0.02, 0.025, 0.03, 0.035], fontsize=18)
     plt.show()
 
 def plot_mean_v(data):
@@ -291,11 +296,11 @@ if __name__ == "__main__":
     
     system = "64"
     local_path = Path(__file__).parent / f"velocity vs time AB0.1 {system}"
-    file_path = local_path / 'SD_data.txt'
+    file_path = local_path / 'velocity_.0400.dat'
 
     data = np.loadtxt(file_path)
     
-    plot_SD(data)
+    plot_vt(data)
     """
     local_path32 = Path(__file__).parent / "velocity vs time AB0.0 32"
     local_path64 = Path(__file__).parent / "velocity vs time AB0.0 64"
